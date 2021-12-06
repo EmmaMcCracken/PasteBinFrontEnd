@@ -7,21 +7,58 @@ interface PasteProps {
   date: string;
 }
 
+interface CreatePasteProps {
+  baseURL: string;
+}
+
 interface RecentPastesProps {
   pastesList: PasteProps[];
 }
 
-function CreatePaste(): JSX.Element {
+function CreatePaste(props: CreatePasteProps): JSX.Element {
+  const { baseURL } = props;
+  const [textToAdd, setTextToAdd] = useState("");
+  const [titleToAdd, setTitleToAdd] = useState("");
+
+  async function handleSubmit() {
+    const data = {
+      title: titleToAdd,
+      text: textToAdd,
+    };
+
+    if (titleToAdd.length > 50) {
+      alert("The title must be less than 50 characters.");
+    }
+
+    await fetch(baseURL, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data), // body data type must match "Content-Type" header
+    });
+    setTextToAdd("");
+    setTitleToAdd("");
+  }
   return (
     <div className="CreatePaste">
-      {/* <input
-        value={descriptionToAdd}
-        placeholder="add item here"
+      <input
+        value={titleToAdd}
+        placeholder="add title here"
         onChange={(e) => {
           const newItem = e.target.value;
-          setDescriptionToAdd(newItem);
+          setTitleToAdd(newItem);
         }}
-      /> */}
+      />
+      <input
+        value={textToAdd}
+        placeholder="add text here"
+        onChange={(e) => {
+          const newItem = e.target.value;
+          setTextToAdd(newItem);
+        }}
+      />
+      <button onClick={() => handleSubmit()}>Submit</button>
     </div>
   );
 }
@@ -31,7 +68,10 @@ function RecentPastes(props: RecentPastesProps): JSX.Element {
   return (
     <div className="pastesList">
       {pastesList.map((paste) => (
-        <p key={paste.id}>{paste.text}</p>
+        <div className="pasteItem" key={paste.id}>
+          <h2>{paste.title && paste.title}</h2>
+          <p>{paste.text}</p>
+        </div>
       ))}
     </div>
   );
@@ -54,7 +94,7 @@ function App(): JSX.Element {
   return (
     <div className="main">
       {" "}
-      <CreatePaste /> <RecentPastes pastesList={pastesList} />{" "}
+      <CreatePaste baseURL={baseURL} /> <RecentPastes pastesList={pastesList} />{" "}
     </div>
   );
 }
