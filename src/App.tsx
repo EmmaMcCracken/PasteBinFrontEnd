@@ -9,6 +9,7 @@ interface PasteProps {
 
 interface CreatePasteProps {
   baseURL: string;
+  setRefresh: (input: boolean) => void;
 }
 
 interface RecentPastesProps {
@@ -16,30 +17,32 @@ interface RecentPastesProps {
 }
 
 function CreatePaste(props: CreatePasteProps): JSX.Element {
-  const { baseURL } = props;
+  const { baseURL, setRefresh } = props;
   const [textToAdd, setTextToAdd] = useState("");
   const [titleToAdd, setTitleToAdd] = useState("");
+  const [errorMessage, setErrorMessage] = useState(false);
 
   async function handleSubmit() {
     const data = {
       title: titleToAdd,
       text: textToAdd,
     };
-
-    if (titleToAdd.length > 50) {
-      alert("The title must be less than 50 characters.");
+    if (titleToAdd.length < 51 && textToAdd !== "") {
+      await fetch(baseURL, {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data), // body data type must match "Content-Type" header
+      });
+      setTextToAdd("");
+      setTitleToAdd("");
+      setRefresh(true);
+    } else {
+      setErrorMessage(true);
     }
-
-    await fetch(baseURL, {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data), // body data type must match "Content-Type" header
-    });
-    setTextToAdd("");
-    setTitleToAdd("");
   }
+
   return (
     <div className="CreatePaste">
       <input
@@ -59,6 +62,17 @@ function CreatePaste(props: CreatePasteProps): JSX.Element {
         }}
       />
       <button onClick={() => handleSubmit()}>Submit</button>
+      <div className="error">
+        {titleToAdd.length > 50 && (
+          <p>The title should not exceed 50 characters.</p>
+        )}
+        {errorMessage && (
+          <p>
+            Your paste could not be submitted. Please make sure the text input
+            is not blank.
+          </p>
+        )}
+      </div>
     </div>
   );
 }
@@ -82,19 +96,23 @@ function App(): JSX.Element {
 
   const [pastesList, setPastesList] = useState<PasteProps[]>([]);
 
+  const [refresh, setRefresh] = useState<boolean>(false);
+
   useEffect(() => {
     async function getData() {
       const response = await fetch(baseURL);
       const data = await response.json();
       setPastesList(data);
+      setRefresh(false);
     }
     getData();
-  }, [pastesList]);
+  }, [refresh]);
 
   return (
     <div className="main">
       {" "}
-      <CreatePaste baseURL={baseURL} /> <RecentPastes pastesList={pastesList} />{" "}
+      <CreatePaste baseURL={baseURL} setRefresh={setRefresh} />{" "}
+      <RecentPastes pastesList={pastesList} />{" "}
     </div>
   );
 }
