@@ -1,9 +1,12 @@
 .paste-summary {
-  overflow: hidden;
-  text-overflow: ellipsis;
+  -webkit-line-clamp: 5;
   display: -webkit-box;
-  line-height: 16px; /* fallback */
-  max-height: 80px; /* fallback */
-  -webkit-line-clamp: 5; /* number of lines to show */
-  -webkit-bsox-orient: vertical;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.paste-expanded {
+  color: blue;
+  cursor: pointer;
 }
