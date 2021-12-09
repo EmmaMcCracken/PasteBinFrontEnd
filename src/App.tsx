@@ -28,7 +28,7 @@ function CreatePaste(props: CreatePasteProps): JSX.Element {
       text: textToAdd,
     };
     if (titleToAdd.length < 51 && textToAdd !== "") {
-      await fetch(baseURL, {
+      await fetch(baseURL + "pastes", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         headers: {
           "Content-Type": "application/json",
@@ -79,12 +79,13 @@ function CreatePaste(props: CreatePasteProps): JSX.Element {
 
 function RecentPastes(props: RecentPastesProps): JSX.Element {
   const { pastesList } = props;
+  const paragraphClassName = "paste-summary";
   return (
     <div className="pastesList">
       {pastesList.map((paste) => (
         <div className="pasteItem" key={paste.id}>
           <h2>{paste.title && paste.title}</h2>
-          <p>{paste.text}</p>
+          <p className={paragraphClassName}>{paste.text}</p>
         </div>
       ))}
     </div>
@@ -100,7 +101,7 @@ function App(): JSX.Element {
 
   useEffect(() => {
     async function getData() {
-      const response = await fetch(baseURL);
+      const response = await fetch(baseURL + "pastes");
       const data = await response.json();
       setPastesList(data);
       setRefresh(false);
