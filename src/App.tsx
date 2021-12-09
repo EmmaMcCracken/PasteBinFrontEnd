@@ -79,16 +79,28 @@ function CreatePaste(props: CreatePasteProps): JSX.Element {
 
 function RecentPastes(props: RecentPastesProps): JSX.Element {
   const { pastesList } = props;
-  const paragraphClassName = "paste-summary";
+
   return (
     <div className="pastesList">
-      {pastesList.map((paste) => (
-        <div className="pasteItem" key={paste.id}>
-          <h2>{paste.title && paste.title}</h2>
-          <p className={paragraphClassName}>{paste.text}</p>
-        </div>
-      ))}
+      {pastesList.map((paste) => <SinglePaste key={paste.id} id={paste.id} title={paste.title} text={paste.text} date={paste.date}/>)}
     </div>
+  );
+}
+
+interface SinglePasteProps {
+  id: number;
+  title: string | null;
+  text: string;
+  date: string;
+}
+
+function SinglePaste(props: SinglePasteProps): JSX.Element {
+  const [expand, setExpand] = useState(false);
+  return (
+        <div className={expand ? "paste-expanded" : "paste-summary"} key={props.id} onClick={() => setExpand(!expand)}>
+          <h2>{props.title && props.title}</h2>
+          <p>{props.text}</p>
+        </div>
   );
 }
 
