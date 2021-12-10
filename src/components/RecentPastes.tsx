@@ -1,11 +1,12 @@
 import { SinglePaste } from "./SinglePaste";
 import { PasteProps } from "../App";
-import { CommentProps } from "./CommentSection";
+import { CommentProps } from "./SPCommentSection";
 
 interface RecentPastesProps {
   pastesList: PasteProps[];
-  baseURL: string;
   comments: CommentProps[];
+  baseURL: string;
+  setRefresh: (input: boolean) => void;
 }
 export function RecentPastes(props: RecentPastesProps): JSX.Element {
   const { pastesList, comments } = props;
@@ -20,6 +21,8 @@ export function RecentPastes(props: RecentPastesProps): JSX.Element {
           text={paste.text}
           date={paste.date}
           comments={comments}
+          baseURL={props.baseURL}
+          setRefresh={props.setRefresh}
         />
       ))}
     </div>

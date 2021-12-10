@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CommentProps, CommentSection } from "./CommentSection";
+import { CommentProps, SinglePasteCommentSection } from "./SPCommentSection";
 
 interface SinglePasteProps {
   id: number;
@@ -7,7 +7,10 @@ interface SinglePasteProps {
   text: string;
   date: string;
   comments: CommentProps[];
+  baseURL: string;
+  setRefresh: (input: boolean) => void;
 }
+
 export function SinglePaste(props: SinglePasteProps): JSX.Element {
   const [expand, setExpand] = useState(false);
   const pasteComments = props.comments.filter(
@@ -15,27 +18,19 @@ export function SinglePaste(props: SinglePasteProps): JSX.Element {
   );
   const numberOfComments = pasteComments.length;
   return (
-    <div key={props.id}>
-      <h2>{props.title && props.title}</h2>
-      <p
-        id={`paste-text-${props.id}`}
-        className={expand ? "paste-expanded" : "paste-summary"}
-      >
-        {props.text}
-      </p>
-      {/* {console.log(countLines(props.id))} */}
-      {numberOfComments > 1 && ` ${numberOfComments} comments`}
+    <div className="card border-light mb-3 single-paste" key={props.id}>
+  <div className="card-header">{props.date.slice(0, 10)}</div>
+  <div className="card-body">
+    <h5 className="card-title">{props.title && props.title}</h5>
+    <p className={expand ? "card-text paste-expanded" : "card-text paste-summary"} id={`paste-text-${props.id}`}>{props.text}</p>
+    {numberOfComments > 1 && ` ${numberOfComments} comments`}
       {numberOfComments === 1 && ` ${numberOfComments} comment`} <br />
-      <button onClick={() => setExpand(!expand)}>
+      <button className="btn btn-light" onClick={() => setExpand(!expand)}>
         {expand ? "See less" : "See more"}
       </button>
-      {/* {countLines(props.id) > 5 && (
-        <button onClick={() => setExpand(!expand)}>
-          {expand ? "See less" : "See more"}
-        </button>
-      )} */}
-      {expand && <CommentSection pasteComments={pasteComments} />}
-    </div>
+      {expand && <SinglePasteCommentSection pasteComments={pasteComments} baseURL={props.baseURL} setRefresh={props.setRefresh} paste_id={props.id}/>}
+  </div>
+</div>
   );
 }
 // function countLines(id: number) {

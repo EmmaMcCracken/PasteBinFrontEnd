@@ -1,22 +1,22 @@
 import { useState } from "react";
 
-interface CreatePasteProps {
+interface CreateCommentProps {
   baseURL: string;
   setRefresh: (input: boolean) => void;
+  paste_id: number;
 }
-export function CreatePaste(props: CreatePasteProps): JSX.Element {
+
+export function CreateComment(props: CreateCommentProps): JSX.Element {
   const { baseURL, setRefresh } = props;
   const [textToAdd, setTextToAdd] = useState("");
-  const [titleToAdd, setTitleToAdd] = useState("");
   const [errorMessage, setErrorMessage] = useState(false);
 
   async function handleSubmit() {
     const data = {
-      title: titleToAdd,
       text: textToAdd,
     };
-    if (titleToAdd.length < 51 && textToAdd !== "") {
-      await fetch(baseURL + "pastes", {
+    if (textToAdd !== "") {
+      await fetch(baseURL + "comments/" + props.paste_id, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -24,7 +24,6 @@ export function CreatePaste(props: CreatePasteProps): JSX.Element {
         body: JSON.stringify(data), // body data type must match "Content-Type" header
       });
       setTextToAdd("");
-      setTitleToAdd("");
       setRefresh(true);
     } else {
       setErrorMessage(true);
@@ -32,22 +31,13 @@ export function CreatePaste(props: CreatePasteProps): JSX.Element {
   }
 
   return (
-    <div className="CreatePaste">
-      <input
-        value={titleToAdd}
-        className="form-control form-control-lg"
-        placeholder="add title here"
-        onChange={(e) => {
-          const newItem = e.target.value;
-          setTitleToAdd(newItem);
-        }}
-      />
+    <div className="CreateComment">
       <div className="input-group mb-3">
         <textarea
           value={textToAdd}
           rows={5}
           className="form-control"
-          placeholder="Add text"
+          placeholder="Add comment"
           aria-label="Recipient's username"
           aria-describedby="button-addon2"
           onChange={(e) => {
@@ -61,17 +51,13 @@ export function CreatePaste(props: CreatePasteProps): JSX.Element {
           id="button-addon2"
           onClick={() => handleSubmit()}
         >
-          Submit
+          Post
         </button>
       </div>
       <div className="error">
-        {titleToAdd.length > 50 && (
-          <p>The title should not exceed 50 characters.</p>
-        )}
         {errorMessage && (
           <p>
-            Your paste could not be submitted. Please make sure the text input
-            is not blank.
+            Comment must contain text
           </p>
         )}
       </div>
