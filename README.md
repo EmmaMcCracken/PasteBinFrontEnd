@@ -23,4 +23,4 @@ in your terminal to clone the repository.
 
 When running the repository for the first time, run `yarn` in the root of the repository to install all dependencies.
 
-To run the file locally, run 'yarn:start'.
+To run the file locally, run `yarn:start`.
