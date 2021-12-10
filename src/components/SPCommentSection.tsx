@@ -20,8 +20,9 @@ interface SinglePasteCommentSectionProps {
   paste_id: number;
 }
 
-
-export function SinglePasteCommentSection(props: SinglePasteCommentSectionProps): JSX.Element {
+export function SinglePasteCommentSection(
+  props: SinglePasteCommentSectionProps
+): JSX.Element {
   const { pasteComments, baseURL, setRefresh } = props;
 
   return (
@@ -34,7 +35,11 @@ export function SinglePasteCommentSection(props: SinglePasteCommentSectionProps)
           comment_id={comment.comment_id}
         />
       ))}
-      <CreateComment baseURL={baseURL} setRefresh={setRefresh} paste_id={props.paste_id}/>
+      <CreateComment
+        baseURL={baseURL}
+        setRefresh={setRefresh}
+        paste_id={props.paste_id}
+      />
     </div>
   );
 }
@@ -42,11 +47,11 @@ export function SinglePasteCommentSection(props: SinglePasteCommentSectionProps)
 function SingleComment(props: SingleCommentProps): JSX.Element {
   return (
     <div className="card w-100">
-  <div className="card-body">
-    <h5 className="card-title">{props.date.slice(0,10)}</h5>
-    <p className="card-text">{props.text}</p>
-    <button className="btn btn-primary">Edit comment</button>
-  </div>
-</div>
+      <div className="card-body">
+        <h5 className="card-title">{props.date.slice(0, 10)}</h5>
+        <p className="card-text">{props.text}</p>
+        <button className="btn btn-primary">Edit comment</button>
+      </div>
+    </div>
   );
 }

@@ -55,11 +55,7 @@ export function CreateComment(props: CreateCommentProps): JSX.Element {
         </button>
       </div>
       <div className="error">
-        {errorMessage && (
-          <p>
-            Comment must contain text
-          </p>
-        )}
+        {errorMessage && <p>Comment must contain text</p>}
       </div>
     </div>
   );
