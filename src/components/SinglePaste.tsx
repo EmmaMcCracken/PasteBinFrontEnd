@@ -75,14 +75,14 @@ export function SinglePaste(props: SinglePasteProps): JSX.Element {
                 <br />
                 {hasMoreThanFiveLines(props.text) ? (
                   <button
-                    className="btn btn-light"
+                    className="btn btn-outline-primary"
                     onClick={() => setExpand(!expand)}
                   >
                     {expand ? "See less" : "See more"}
                   </button>
                 ) : (
                   <button
-                    className="btn btn-light"
+                    className="btn btn-outline-primary"
                     onClick={() => setExpand(!expand)}
                   >
                     {expand ? "See less" : "See comments"}
@@ -128,13 +128,13 @@ export function SinglePaste(props: SinglePasteProps): JSX.Element {
           ) : (
             <>
               <button
-                className="btn btn-light"
+                className="btn btn-outline-warning"
                 onClick={() => setEditing(!editing)}
               >
                 Edit paste
               </button>
               <button
-                className="btn btn-light"
+                className="btn btn-outline-dark"
                 onClick={() => navigator.clipboard.writeText(props.text)}
               >
                 <svg
@@ -150,7 +150,18 @@ export function SinglePaste(props: SinglePasteProps): JSX.Element {
               </button>
             </>
           )}
-          <button className="btn btn-danger" onClick={() => handleDelete()}>
+          {editing && (
+            <button
+              className="btn btn-secondary"
+              onClick={() => setEditing(!editing)}
+            >
+              Cancel
+            </button>
+          )}
+          <button
+            className="btn btn-outline-danger"
+            onClick={() => handleDelete()}
+          >
             Delete paste
           </button>
           {expand && (
