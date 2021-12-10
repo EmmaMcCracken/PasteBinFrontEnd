@@ -12,3 +12,15 @@
 .single-paste {
   border: 0.5px black solid;
 }
+.btn {
+  margin: 5px 5px;
+}
+.form-control {
+  margin: 5px 0px;
+}
+.btn-outline-secondary {
+  border: 0px solid black;
+}
+.error {
+  color: rgb(230, 39, 39);
+}
