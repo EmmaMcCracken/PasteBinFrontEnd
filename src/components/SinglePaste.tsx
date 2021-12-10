@@ -13,38 +13,101 @@ interface SinglePasteProps {
 
 export function SinglePaste(props: SinglePasteProps): JSX.Element {
   const [expand, setExpand] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [textToEdit, setTextToEdit] = useState(props.text);
+  const [titleToEdit, setTitleToEdit] = useState<string | null>(props.title);
+
   const pasteComments = props.comments.filter(
     (comment) => comment.paste_id === props.id
   );
   const numberOfComments = pasteComments.length;
+  function handleUpdate() {
+    setEditing(false);
+  }
   return (
-    <div className="card border-light mb-3 single-paste" key={props.id}>
-      <div className="card-header">{props.date.slice(0, 10)}</div>
-      <div className="card-body">
-        <h5 className="card-title">{props.title && props.title}</h5>
-        <p
-          className={
-            expand ? "card-text paste-expanded" : "card-text paste-summary"
-          }
-          id={`paste-text-${props.id}`}
-        >
-          {props.text}
-        </p>
-        {numberOfComments > 1 && ` ${numberOfComments} comments`}
-        {numberOfComments === 1 && ` ${numberOfComments} comment`} <br />
-        <button className="btn btn-light" onClick={() => setExpand(!expand)}>
-          {expand ? "See less" : "See more"}
-        </button>
-        {expand && (
-          <SinglePasteCommentSection
-            pasteComments={pasteComments}
-            baseURL={props.baseURL}
-            setRefresh={props.setRefresh}
-            paste_id={props.id}
-          />
-        )}
+    <>
+      <div className="card border-light mb-3 single-paste" key={props.id}>
+        <div className="card-header">{props.date.slice(0, 10)}</div>
+        <div className="card-body">
+          <>
+            {!editing && (
+              <>
+                <h5 className="card-title">{props.title && props.title}</h5>
+                <p
+                  className={
+                    expand
+                      ? "card-text paste-expanded"
+                      : "card-text paste-summary"
+                  }
+                  id={`paste-text-${props.id}`}
+                >
+                  {props.text}
+                </p>
+                {numberOfComments > 1 && ` ${numberOfComments} comments`}
+                {numberOfComments === 1 && ` ${numberOfComments} comment`}{" "}
+                <br />
+                <button
+                  className="btn btn-light"
+                  onClick={() => setExpand(!expand)}
+                >
+                  {expand ? "See less" : "See more"}
+                </button>
+              </>
+            )}
+          </>
+          {editing ? (
+            <div className="CreatePaste">
+              <input
+                value={titleToEdit === null ? "" : titleToEdit}
+                className="form-control form-control-lg"
+                placeholder="add title here"
+                onChange={(e) => {
+                  const newItem = e.target.value;
+                  setTitleToEdit(newItem);
+                }}
+              />
+              <div className="input-group mb-3">
+                <textarea
+                  value={textToEdit}
+                  rows={5}
+                  className="form-control"
+                  placeholder="Add text"
+                  aria-label="Recipient's username"
+                  aria-describedby="button-addon2"
+                  onChange={(e) => {
+                    const newItem = e.target.value;
+                    setTextToEdit(newItem);
+                  }}
+                />
+                <button
+                  className="btn btn-outline-secondary"
+                  type="button"
+                  id="button-addon2"
+                  onClick={() => handleUpdate()}
+                >
+                  Update
+                </button>
+              </div>{" "}
+            </div>
+          ) : (
+            <button
+              className="btn btn-light"
+              onClick={() => setEditing(!editing)}
+            >
+              Edit paste
+            </button>
+          )}
+          {expand && (
+            <SinglePasteCommentSection
+              pasteComments={pasteComments}
+              baseURL={props.baseURL}
+              setRefresh={props.setRefresh}
+              paste_id={props.id}
+            />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 // function countLines(id: number) {
