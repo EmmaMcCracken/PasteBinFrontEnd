@@ -10,6 +10,10 @@ interface SinglePasteProps {
 }
 export function SinglePaste(props: SinglePasteProps): JSX.Element {
   const [expand, setExpand] = useState(false);
+  const pasteComments = props.comments.filter(
+    (comment) => comment.paste_id === props.id
+  );
+  const numberOfComments = pasteComments.length;
   return (
     <div key={props.id}>
       <h2>{props.title && props.title}</h2>
@@ -20,6 +24,8 @@ export function SinglePaste(props: SinglePasteProps): JSX.Element {
         {props.text}
       </p>
       {/* {console.log(countLines(props.id))} */}
+      {numberOfComments > 1 && ` ${numberOfComments} comments`}
+      {numberOfComments === 1 && ` ${numberOfComments} comment`} <br />
       <button onClick={() => setExpand(!expand)}>
         {expand ? "See less" : "See more"}
       </button>
@@ -28,9 +34,7 @@ export function SinglePaste(props: SinglePasteProps): JSX.Element {
           {expand ? "See less" : "See more"}
         </button>
       )} */}
-      {expand && (
-        <CommentSection paste_id={props.id} comments={props.comments} />
-      )}
+      {expand && <CommentSection pasteComments={pasteComments} />}
     </div>
   );
 }

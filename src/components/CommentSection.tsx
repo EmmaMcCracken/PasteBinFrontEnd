@@ -12,16 +12,11 @@ interface SingleCommentProps {
 }
 
 interface CommentSectionProps {
-  comments: CommentProps[];
-  paste_id: number;
+  pasteComments: CommentProps[];
 }
 
 export function CommentSection(props: CommentSectionProps): JSX.Element {
-  const { comments, paste_id } = props;
-
-  const pasteComments = comments.filter(
-    (comment) => comment.paste_id === paste_id
-  );
+  const { pasteComments } = props;
 
   return (
     <div className="pastesList">
