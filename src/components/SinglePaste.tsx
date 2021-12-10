@@ -21,8 +21,16 @@ export function SinglePaste(props: SinglePasteProps): JSX.Element {
     (comment) => comment.paste_id === props.id
   );
   const numberOfComments = pasteComments.length;
-  function handleUpdate() {
+  async function handleUpdate() {
     setEditing(false);
+    await fetch(props.baseURL + "pastes/" + props.id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title: titleToEdit, text: textToEdit }), // body data type must match "Content-Type" header
+    });
+    props.setRefresh(true);
   }
   return (
     <>
