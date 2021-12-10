@@ -11,6 +11,8 @@ interface SingleCommentProps {
   comment_id: number;
   text: string;
   date: string;
+  baseURL: string;
+  setRefresh: (input: boolean) => void;
 }
 
 interface SinglePasteCommentSectionProps {
@@ -33,6 +35,8 @@ export function SinglePasteCommentSection(
           text={comment.text}
           date={comment.date}
           comment_id={comment.comment_id}
+          baseURL={baseURL}
+          setRefresh={setRefresh}
         />
       ))}
       <CreateComment
@@ -45,12 +49,21 @@ export function SinglePasteCommentSection(
 }
 
 function SingleComment(props: SingleCommentProps): JSX.Element {
+  async function handleDelete() {
+    await fetch(props.baseURL + "comments/" + props.comment_id, {
+      method: "DELETE",
+    });
+    props.setRefresh(true);
+  }
   return (
     <div className="card w-100">
       <div className="card-body">
         <h5 className="card-title">{props.date.slice(0, 10)}</h5>
         <p className="card-text">{props.text}</p>
         <button className="btn btn-primary">Edit comment</button>
+        <button className="btn btn-danger" onClick={() => handleDelete()}>
+          Delete comment
+        </button>
       </div>
     </div>
   );

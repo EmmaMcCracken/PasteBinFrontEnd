@@ -32,6 +32,12 @@ export function SinglePaste(props: SinglePasteProps): JSX.Element {
     });
     props.setRefresh(true);
   }
+  async function handleDelete() {
+    await fetch(props.baseURL + "pastes/" + props.id, {
+      method: "DELETE",
+    });
+    props.setRefresh(true);
+  }
   return (
     <>
       <div className="card border-light mb-3 single-paste" key={props.id}>
@@ -120,13 +126,33 @@ export function SinglePaste(props: SinglePasteProps): JSX.Element {
               </div>{" "}
             </div>
           ) : (
-            <button
-              className="btn btn-light"
-              onClick={() => setEditing(!editing)}
-            >
-              Edit paste
-            </button>
+            <>
+              <button
+                className="btn btn-light"
+                onClick={() => setEditing(!editing)}
+              >
+                Edit paste
+              </button>
+              <button
+                className="btn btn-light"
+                onClick={() => navigator.clipboard.writeText(props.text)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  className="bi bi-back"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2z" />
+                </svg>
+              </button>
+            </>
           )}
+          <button className="btn btn-danger" onClick={() => handleDelete()}>
+            Delete paste
+          </button>
           {expand && (
             <SinglePasteCommentSection
               pasteComments={pasteComments}
