@@ -1,5 +1,13 @@
-# Simplified CRA starter
+# Paste Bin App
+Simple paste bin application for copying and pasting text to/from your clipboard.
 
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a>
+## Table of contents
+- Technologies
 
-> This is part of Academy's technical curriculum for **The Mark**. All parts of that curriculum, including this project, are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>
+## Technologies
+- react: ^17.0.2
+- react-dom: ^17.0.2
+- react-scripts: 4.0.3
+- typescript: ^4.1.2
+- eslint: ^7.28.0
+- prettier: 2.3.1
