@@ -16,7 +16,11 @@ Project is created with:
 To run this project, fork and copy the SSH (or HTTPS) link to your clipboard. Then run the command
 
 ```bash
-git clone <link>
+$ git clone <link>
 ```
 
-in your terminal.
+in your terminal to clone the repository.
+
+When running the repository for the first time, run `yarn` in the root of the repository to install all dependencies.
+
+To run the file locally, run 'yarn:start'.
