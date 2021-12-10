@@ -3,10 +3,12 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  cursor: pointer;
 }
 
-.paste-expanded {
-  color: blue;
-  cursor: pointer;
+.main {
+  margin: 20px;
+}
+
+.single-paste {
+  border: 0.5px black solid;
 }

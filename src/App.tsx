@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CommentProps } from "./components/CommentSection";
+import { CommentProps } from "./components/SPCommentSection";
 import { CreatePaste } from "./components/CreatePaste";
 import { RecentPastes } from "./components/RecentPastes";
 
@@ -41,11 +41,13 @@ function App(): JSX.Element {
   return (
     <div className="main">
       {" "}
+      <h1 className="display-1">Paste Bin</h1>
       <CreatePaste baseURL={baseURL} setRefresh={setRefresh} />{" "}
       <RecentPastes
         comments={commentsList}
         baseURL={baseURL}
         pastesList={pastesList}
+        setRefresh={setRefresh}
       />{" "}
     </div>
   );
