@@ -41,25 +41,47 @@ export function SinglePaste(props: SinglePasteProps): JSX.Element {
             {!editing && (
               <>
                 <h5 className="card-title">{props.title && props.title}</h5>
-                <p
-                  className={
-                    expand
-                      ? "card-text paste-expanded"
-                      : "card-text paste-summary"
-                  }
-                  id={`paste-text-${props.id}`}
-                >
-                  {props.text}
-                </p>
+                {props.text.includes("\n") ? (
+                  <pre
+                    className={
+                      expand
+                        ? "card-text paste-expanded"
+                        : "card-text paste-summary"
+                    }
+                    id={`paste-text-${props.id}`}
+                  >
+                    {props.text}
+                  </pre>
+                ) : (
+                  <p
+                    className={
+                      expand
+                        ? "card-text paste-expanded"
+                        : "card-text paste-summary"
+                    }
+                    id={`paste-text-${props.id}`}
+                  >
+                    {props.text}
+                  </p>
+                )}
                 {numberOfComments > 1 && ` ${numberOfComments} comments`}
                 {numberOfComments === 1 && ` ${numberOfComments} comment`}{" "}
                 <br />
-                <button
-                  className="btn btn-light"
-                  onClick={() => setExpand(!expand)}
-                >
-                  {expand ? "See less" : "See more"}
-                </button>
+                {hasMoreThanFiveLines(props.text) ? (
+                  <button
+                    className="btn btn-light"
+                    onClick={() => setExpand(!expand)}
+                  >
+                    {expand ? "See less" : "See more"}
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-light"
+                    onClick={() => setExpand(!expand)}
+                  >
+                    {expand ? "See less" : "See comments"}
+                  </button>
+                )}
               </>
             )}
           </>
@@ -118,15 +140,11 @@ export function SinglePaste(props: SinglePasteProps): JSX.Element {
     </>
   );
 }
-// function countLines(id: number) {
-//   const el = document.getElementById(`paste-text-${id}`);
-//   console.log("el", el);
-//   if (el !== null) {
-//     const divHeight = el.offsetHeight;
-//     console.log("divHeight", divHeight);
-//     const lineHeight = parseInt(el.style.lineHeight);
-//     const lines = divHeight / lineHeight;
-//     console.log("lineHeight", lineHeight);
-//     return lines;
-//   } else return 0;
-// }
+
+function hasMoreThanFiveLines(input: string) {
+  if (input.split("\n").length > 5) {
+    return true;
+  } else {
+    return false;
+  }
+}
